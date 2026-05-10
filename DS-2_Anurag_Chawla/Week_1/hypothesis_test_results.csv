@@ -1,0 +1,5 @@
+Test,Variables,Null Hypothesis,p-value,Conclusion
+Chi-square,Gender vs CMD,No association between gender and CMD,<0.001,Reject H0 (Statistically Significant)
+Chi-square,Age vs CMD,No association between age and CMD,<0.001,Reject H0 (Statistically Significant)
+t-test,Male vs Female CMD Rates,Mean CMD rate equal in males and females,0.0158,Reject H0 (Statistically Significant)
+,,,,"Summary: All null hypotheses are rejected. Gender and age significantly affect CMD prevalence, and CMD rates differ significantly between males and females."
