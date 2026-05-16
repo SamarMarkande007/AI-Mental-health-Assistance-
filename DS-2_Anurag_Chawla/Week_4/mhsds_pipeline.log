@@ -1,0 +1,41 @@
+2026-05-16 18:09:48  INFO      Today's date: 2026-05-16
+2026-05-16 18:09:48  INFO      Checking for latest available MHSDS data...
+2026-05-16 18:09:48  INFO      Trying April 2026...
+2026-05-16 18:09:48  WARNING   No URL in KNOWN_URLS for 2026-04 — skipping.
+2026-05-16 18:09:48  INFO      Trying March 2026...
+2026-05-16 18:09:48  WARNING   No URL in KNOWN_URLS for 2026-03 — skipping.
+2026-05-16 18:09:48  INFO      Trying February 2026...
+2026-05-16 18:09:48  INFO      =======================================================
+2026-05-16 18:09:48  INFO        Running pipeline for February 2026
+2026-05-16 18:09:48  INFO      =======================================================
+2026-05-16 18:09:48  INFO      Publication page URL: https://digital.nhs.uk/data-and-information/publications/statistical/mental-health-services-monthly-statistics/performance-february-2026
+2026-05-16 18:09:48  INFO      Found URL for 2026-02: https://files.digital.nhs.uk/CD/549410/MHSDS%20Data_FebPerf_2026.zip
+2026-05-16 18:09:48  INFO      Downloading ZIP from: https://files.digital.nhs.uk/CD/549410/MHSDS%20Data_FebPerf_2026.zip
+2026-05-16 18:09:52  INFO      Downloaded 4.1 MB
+2026-05-16 18:09:52  INFO      Extracting: MHSDS Data_FebPerf_2026/MHSDS Data_FebPerf_2026.csv
+2026-05-16 18:09:54  INFO      Loaded 771,626 rows × 11 columns
+2026-05-16 18:09:56  INFO      Cleaned: 771,626 rows | Suppressed: 619,013 rows
+2026-05-16 18:09:56  INFO      Source key: performance-2026-02
+2026-05-16 18:09:56  INFO      Master file does not exist yet — first load.
+2026-05-16 18:10:01  INFO      Appended 771,626 rows → master now 203.5 MB
+2026-05-16 18:10:01  INFO      Saved to: outputs\w4_ds2_MHSDS_integration_into_pipeline\mhsds_master.csv
+2026-05-16 18:10:02  INFO      ✅ February 2026 successfully added to master!
+2026-05-16 18:10:02  INFO      Latest data loaded: February 2026
+2026-05-16 18:10:04  INFO      =======================================================
+2026-05-16 18:10:04  INFO        MHSDS MASTER DATASET SUMMARY
+2026-05-16 18:10:04  INFO      =======================================================
+2026-05-16 18:10:04  INFO        Total rows:      771,626
+2026-05-16 18:10:04  INFO        Total columns:   15
+2026-05-16 18:10:04  INFO        File size:       203.5 MB
+2026-05-16 18:10:04  INFO        Months loaded:   1
+2026-05-16 18:10:04  INFO        Unique measures: 378
+2026-05-16 18:10:04  INFO        Unique orgs:     1149
+2026-05-16 18:10:04  INFO        Date range:      2025-03-01 → 2026-02-01
+2026-05-16 18:10:04  INFO      
+2026-05-16 18:10:04  INFO        Loaded source files:
+2026-05-16 18:10:04  INFO          performance-2026-02    771,626 rows
+2026-05-16 18:10:04  INFO      =======================================================
+2026-05-16 18:10:04  INFO        Output directory: outputs\w4_ds2_MHSDS_integration_into_pipeline
+2026-05-16 18:10:04  INFO        Master file:      outputs\w4_ds2_MHSDS_integration_into_pipeline\mhsds_master.csv
+2026-05-16 18:10:04  INFO        Log file:         outputs\w4_ds2_MHSDS_integration_into_pipeline\mhsds_pipeline.log
+2026-05-16 18:10:04  INFO      =======================================================
