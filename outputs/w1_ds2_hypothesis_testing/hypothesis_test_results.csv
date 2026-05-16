@@ -1,0 +1,4 @@
+Test,Variables,H0,Statistic,p_value,Conclusion
+Chi-square,Gender vs CMD,No gender-CMD association,69.2751,<0.001,Reject Ho (Significant)
+Chi-square,Age vs CMD,No age-CMD association,100.5356,<0.001,Reject Ho (Significant)
+t-test,Male vs Female CMD rates,Equal CMD rates by sex,-2.8099,0.0158,Reject Ho (Significant)

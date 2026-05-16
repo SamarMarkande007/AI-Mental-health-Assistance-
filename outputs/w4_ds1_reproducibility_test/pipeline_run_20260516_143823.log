@@ -1,0 +1,44 @@
+  NHS Mental Health DS Pipeline - Full Run
+
+ -->  Week 1 DS-1  (scripts/week1/ds1_statistical_baseline_model.py)
+  Done in 13.4s ->  APMS2014_regional_prevalence.png
+
+ -->  Week 1 DS-2  (scripts/week1/ds2_hypothesis_testing.py)
+  Done in 2.0s ->     t-test Male vs Female CMD rates    Equal CMD rates by sex    -2.8099  0.0158 Reject Ho (Significant)
+
+ -->  Week 1 DS-3  (scripts/week1/ds3_distribution_analysis.py)
+  Done in 5.7s ->   dist_regional_cmd.png | dist_temporal_trend.png
+
+ -->  Week 2 DS-1  (scripts/week2/ds1_regression_modelling.py)
+  Done in 4.7s ->   -> regression_metrics.csv | regression_coefficients.csv | regression_results.png
+
+ -->  Week 2 DS-2  (scripts/week2/ds2_clustering_patient_segments.py)
+  Done in 10.6s ->   -> clustered_patients.csv | cluster_profiles.csv | cluster_analysis.png
+
+ -->  Week 2 DS-3  (scripts/week2/ds3_temporal_pattern_detection.py)
+  Done in 4.3s ->   -> temporal_rolling_averages.png | temporal_chow_scan.png | temporal_chow_test_results.csv
+
+ -->  Week 3 DS-1  (scripts/week3/ds1_iapt_demand_forecasting.py)
+  Done in 5.9s ->   -> forecast_model_comparison.png | forecast_3month_ahead.png | forecast_metrics.csv
+
+ -->  Week 3 DS-2  (scripts/week3/ds2_prescribing_anomaly_detection.py)
+  Done in 5.2s ->   -> anomaly_flags.csv | anomaly_overview.png | anomaly_heatmap.png
+
+ -->  Week 3 DS-3  (scripts/week3/ds3_geo_spatial_analysis.py)
+  Done in 5.1s ->   -> spatial_imd_map.png | spatial_access_rate_map.png | spatial_underserved_map.png | spatial_icb_analysis.csv
+
+
+  Summary
+ Week 1 DS-1      OK        13.4s
+ Week 1 DS-2      OK        2.0s
+ Week 1 DS-3      OK        5.7s
+ Week 2 DS-1      OK        4.7s
+ Week 2 DS-2      OK        10.6s
+ Week 2 DS-3      OK        4.3s
+ Week 3 DS-1      OK        5.9s
+ Week 3 DS-2      OK        5.2s
+ Week 3 DS-3      OK        5.1s
+
+  9/9 scripts passed | Total time: 57.0s
+
+  All outputs saved to outputs/

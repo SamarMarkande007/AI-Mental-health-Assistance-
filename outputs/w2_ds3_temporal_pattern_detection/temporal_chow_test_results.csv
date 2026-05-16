@@ -1,0 +1,7 @@
+Variable,Break_Year,F_stat,p_value,Significant
+Burglary worry,2013,1.2059,0.3225,NO
+Car crime worry,2013,57.152,0.0,YES
+Violent crime worry,2013,3.9823,0.037,YES
+Male feel safe,2013,0.1694,0.8455,NO
+Female feel safe,2013,0.8667,0.4372,NO
+All feel safe,2013,0.4081,0.6709,NO

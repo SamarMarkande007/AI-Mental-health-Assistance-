@@ -1,0 +1,7 @@
+Variable,Best_Break_Year,F_stat,p_value
+Burglary worry,2011,10.6166,0.0009
+Car crime worry,2012,79.4818,0.0
+Violent crime worry,2005,9.7995,0.0013
+Male feel safe,2009,3.1711,0.0661
+Female feel safe,2012,6.0814,0.0096
+All feel safe,2012,3.3705,0.0571
