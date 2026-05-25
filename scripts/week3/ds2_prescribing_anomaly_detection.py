@@ -33,26 +33,35 @@ df['anomaly_score'] = model.decision_function(X_scaled)
 df['anomaly_flag']  = model.predict(X_scaled)
 df['anomaly_flag']  = df['anomaly_flag'].map({1:'Normal',-1:'Anomaly'})
 
-# ── Plot 1: Score distribution ────────────────────────────────────────────────
-fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+# Plot 1: Score distribution 
+fig, ax = plt.subplots(figsize=(8, 5))
 fig.suptitle('Prescribing Anomaly Detection — Isolation Forest', fontsize=13, fontweight='bold')
 
-axes[0].hist(df[df['anomaly_flag']=='Normal']['anomaly_score'],bins=50,alpha=0.7,color='steelblue',label='Normal')
-axes[0].hist(df[df['anomaly_flag']=='Anomaly']['anomaly_score'],bins=50,alpha=0.7,color='tomato',label='Anomaly')
-axes[0].axvline(0,color='k',linestyle='--',lw=1.5,label='Threshold')
-axes[0].set(title='Anomaly Score Distribution',xlabel='Anomaly Score',ylabel='Count'); axes[0].legend()
+ax.hist(df[df['anomaly_flag']=='Normal']['anomaly_score'], bins=50, alpha=0.7, color='steelblue', label='Normal')
+ax.hist(df[df['anomaly_flag']=='Anomaly']['anomaly_score'], bins=50, alpha=0.7, color='tomato', label='Anomaly')
+ax.axvline(0, color='k', linestyle='--', lw=1.5, label='Threshold')
+ax.set(title='Anomaly Score Distribution', xlabel='Anomaly Score', ylabel='Count')
+ax.legend()
+
+plt.tight_layout()
+plt.savefig(f"{OUT}/anomaly_score_distribution.png", dpi=150, bbox_inches='tight')
+plt.close()
+
+# Plot 2: Top 20 CCGs 
+fig, ax = plt.subplots(figsize=(13, 5))
+fig.suptitle('Prescribing Anomaly Detection — Isolation Forest', fontsize=13, fontweight='bold')
 
 top20 = (df[df['anomaly_flag']=='Anomaly'].groupby('row_name')['anomaly_flag']
          .count().sort_values(ascending=False).head(20))
-top20.plot(kind='bar',color='tomato',alpha=0.8,ax=axes[1],edgecolor='none')
-axes[1].set(title='Top 20 CCGs — Most Anomalous Months',xlabel='',ylabel='Anomalous Months')
-axes[1].tick_params(axis='x',rotation=45)
+top20.plot(kind='bar', color='tomato', alpha=0.8, ax=ax, edgecolor='none')
+ax.set(title='Top 20 CCGs — Most Anomalous Months', xlabel='', ylabel='Anomalous Months')
+ax.tick_params(axis='x', rotation=45)
 
 plt.tight_layout()
-plt.savefig(f"{OUT}/anomaly_overview.png", dpi=150, bbox_inches='tight')
+plt.savefig(f"{OUT}/anomaly_top20_ccgs.png", dpi=150, bbox_inches='tight')
 plt.close()
 
-# ── Plot 2: Heatmap top 10 CCGs ──────────────────────────────────────────────
+# Plot 3: Heatmap top 10 CCGs 
 top10 = df[df['anomaly_flag']=='Anomaly']['row_name'].value_counts().head(10).index
 pivot = df[df['row_name'].isin(top10)].pivot_table(index='row_name',columns='date',values='anomaly_score')
 fig, ax = plt.subplots(figsize=(18, 6))
@@ -62,7 +71,7 @@ plt.tight_layout()
 plt.savefig(f"{OUT}/anomaly_heatmap.png", dpi=150, bbox_inches='tight')
 plt.close()
 
-# ── Save CSV ──────────────────────────────────────────────────────────────────
+# Save CSV 
 out = df[['row_id','row_name','date','actual_cost','items','quantity','total_list_size',
           'cost_per_patient','items_per_patient','quantity_per_patient',
           'cost_per_item','quantity_per_item','anomaly_score','anomaly_flag']].copy()

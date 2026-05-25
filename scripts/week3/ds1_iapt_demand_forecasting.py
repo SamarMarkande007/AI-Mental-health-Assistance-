@@ -16,7 +16,7 @@ df['Month'] = pd.to_datetime(df['Month'], format='%b-%y')
 split = df['Month'].max() - pd.DateOffset(months=6)
 train, test = df[df['Month']<=split], df[df['Month']>split]
 
-# ── Prophet ───────────────────────────────────────────────────────────────────
+# Prophet 
 p_train = train[['Month','Referrals_Received']].rename(columns={'Month':'ds','Referrals_Received':'y'})
 p_test  = test[['Month','Referrals_Received']].rename(columns={'Month':'ds','Referrals_Received':'y'})
 
@@ -27,7 +27,7 @@ p_pred  = m.predict(m.make_future_dataframe(periods=len(p_test),freq='MS',includ
 p_mae   = mean_absolute_error(p_test['y'].values, p_pred)
 p_rmse  = np.sqrt(mean_squared_error(p_test['y'].values, p_pred))
 
-# ── ARIMA ─────────────────────────────────────────────────────────────────────
+# ARIMA 
 arima_tr = train.set_index('Month')['Referrals_Received']
 arima_te = test.set_index('Month')['Referrals_Received']
 ar_res   = ARIMA(arima_tr, order=(2,1,2)).fit()
@@ -35,7 +35,7 @@ ar_pred  = ar_res.predict(start=arima_te.index.min(), end=arima_te.index.max(), 
 a_mae    = mean_absolute_error(arima_te.values, ar_pred.values)
 a_rmse   = np.sqrt(mean_squared_error(arima_te.values, ar_pred.values))
 
-# ── Plot 1: Actual vs Predicted ───────────────────────────────────────────────
+# Plot 1: Actual vs Predicted 
 fig, axes = plt.subplots(1, 2, figsize=(13, 5))
 fig.suptitle('IAPT Referral Forecast — Model Comparison', fontsize=13, fontweight='bold')
 
@@ -53,7 +53,7 @@ plt.tight_layout()
 plt.savefig(f"{OUT}/forecast_model_comparison.png", dpi=150, bbox_inches='tight')
 plt.close()
 
-# ── Plot 2: 3-month ahead forecast ───────────────────────────────────────────
+# Plot 2: 3-month ahead forecast 
 fig, ax = plt.subplots(figsize=(13, 5))
 ax.plot(df['Month'],df['Referrals_Received'],label='Historical',color='steelblue',lw=2)
 ax.plot(fc['ds'],fc['yhat'],label='Prophet Forecast',color='tomato',lw=2,linestyle='--')
@@ -63,7 +63,7 @@ ax.legend(); ax.grid(alpha=0.3); plt.xticks(rotation=45); plt.tight_layout()
 plt.savefig(f"{OUT}/forecast_3month_ahead.png", dpi=150, bbox_inches='tight')
 plt.close()
 
-# ── Save forecast CSV ─────────────────────────────────────────────────────────
+# Save forecast CSV 
 fc_out = fc[['ds','yhat','yhat_lower','yhat_upper']].tail(3).rename(
     columns={'ds':'Month','yhat':'Forecast','yhat_lower':'CI_Lower','yhat_upper':'CI_Upper'})
 fc_out.to_csv(f"{OUT}/forecast_3month_values.csv", index=False)

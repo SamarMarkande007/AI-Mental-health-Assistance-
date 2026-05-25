@@ -43,7 +43,7 @@ cmd_emp    = pd.DataFrame(raw['cmd_employment'].iloc[25:32, 1:5].values.astype(f
 cmd_smoke  = pd.DataFrame(raw['cmd_smoking'].iloc[25:32,  1:5].values.astype(float), index=DISORDERS, columns=SMOKE)
 cmd_region = pd.DataFrame(raw['cmd_region'].iloc[25:32,   1:10].values.astype(float), index=DISORDERS, columns=REGIONS_S)
 
-# ── Plot 1: CIS-R by sex and age ──────────────────────────────────────────────
+# Plot 1: CIS-R by sex and age 
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 fig.suptitle('CIS-R Score Distribution by Sex - APMS 2014', fontsize=13, fontweight='bold')
 x = np.arange(4); w = 0.3
@@ -60,7 +60,7 @@ axes[1].set_xticks(xs); axes[1].set_xticklabels(AGES[:-1], rotation=30)
 axes[1].set(ylabel='CIS-R ≥12 (%)', title='Clinical-Level CMD by Age & Sex'); axes[1].legend()
 plt.tight_layout(); plt.savefig(f"{OUT}/dist_cisr_sex_age.png", dpi=150, bbox_inches='tight'); plt.close()
 
-# ── Plot 2: CMD heatmap + sex bar ────────────────────────────────────────────
+# Plot 2: CMD heatmap + sex bar 
 fig, axes = plt.subplots(1, 2, figsize=(16, 5))
 fig.suptitle('CMD Disorder Prevalence - APMS 2014', fontsize=13, fontweight='bold')
 mat = cmd_age.iloc[:6,:7].values.astype(float)
@@ -79,7 +79,7 @@ axes[1].set_xticks(x); axes[1].set_xticklabels(DISORDERS[:6],rotation=15)
 axes[1].set(ylabel='Prevalence (%)',title='Prevalence by Sex'); axes[1].legend()
 plt.tight_layout(); plt.savefig(f"{OUT}/dist_cmd_heatmap_sex.png",dpi=150,bbox_inches='tight'); plt.close()
 
-# ── Plot 3: Any CMD across segments ──────────────────────────────────────────
+# Plot 3: Any CMD across segments 
 fig, axes = plt.subplots(1, 3, figsize=(18, 5))
 fig.suptitle('Any CMD Across Population Segments - APMS 2014', fontsize=13, fontweight='bold')
 for ax, vals, labels, title in [
@@ -93,7 +93,7 @@ for ax, vals, labels, title in [
     ax.set(ylabel='Any CMD (%)',title=title); ax.set_ylim(0,max(vals)*1.3)
 plt.tight_layout(); plt.savefig(f"{OUT}/dist_any_cmd_segments.png",dpi=150,bbox_inches='tight'); plt.close()
 
-# ── Plot 4: Regional CMD ──────────────────────────────────────────────────────
+# Plot 4: Regional CMD 
 fig, axes = plt.subplots(1, 2, figsize=(16, 5))
 fig.suptitle('Regional CMD — APMS 2014', fontsize=13, fontweight='bold')
 ra = cmd_region.loc['Any CMD'].sort_values()
@@ -111,7 +111,7 @@ for i in range(6):
 axes[1].set_title('Disorder x Region (%)'); plt.colorbar(im2,ax=axes[1],fraction=0.03)
 plt.tight_layout(); plt.savefig(f"{OUT}/dist_regional_cmd.png",dpi=150,bbox_inches='tight'); plt.close()
 
-# ── Plot 5: Temporal trend ────────────────────────────────────────────────────
+# Plot 5: Temporal trend 
 years = [1993,2000,2007,2014]
 trend = {'Men':[10.5,13.4,12.6,13.6],'Women':[17.7,19.2,20.1,21.4],'All':[14.1,16.4,16.4,17.6]}
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))

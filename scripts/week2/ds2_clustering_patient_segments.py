@@ -60,11 +60,24 @@ axes[1,0].bar(x+w/2,profiles['gad_score'],w,label='GAD',color='#E24B4A',edgecolo
 axes[1,0].set_xticks(x); axes[1,0].set_xticklabels([f'C{i}' for i in range(best_k)])
 axes[1,0].set(title='PHQ & GAD per Cluster',ylabel='Score'); axes[1,0].legend()
 
-hm = profiles[['phq_score','gad_score','age','bmi','epworth_score']].values
-im = axes[1,1].imshow(hm.T,cmap='RdYlGn',aspect='auto')
-axes[1,1].set_xticks(range(best_k)); axes[1,1].set_xticklabels([f'C{i}' for i in range(best_k)])
-axes[1,1].set_yticks(range(5)); axes[1,1].set_yticklabels(['PHQ','GAD','Age','BMI','Epworth'])
-axes[1,1].set_title('Feature Heatmap per Cluster'); plt.colorbar(im,ax=axes[1,1])
+feat_labels = ['PHQ', 'GAD', 'Age', 'BMI', 'Epworth']
+hm = profiles[['phq_score','gad_score','age','bmi','epworth_score']].values  # shape (6, 5)
+
+im = axes[1,1].imshow(hm.T, cmap='YlOrRd', aspect='auto')
+
+for i in range(best_k):       
+    for j in range(len(feat_labels)):   
+        axes[1,1].text(i, j, f"{hm[i, j]}", ha='center', va='center',
+                       fontsize=10, color='black')
+
+axes[1,1].set_xticks(range(best_k))
+axes[1,1].set_xticklabels([f'C{i}' for i in range(best_k)])
+axes[1,1].set_yticks(range(len(feat_labels)))
+axes[1,1].set_yticklabels(feat_labels)
+axes[1,1].set_title('Cluster Feature Heatmap', fontsize=12)
+axes[1,1].set_xlabel('PHQ Score', fontsize=9)
+
+plt.colorbar(im, ax=axes[1,1])
 
 plt.tight_layout()
 plt.savefig(f"{OUT}/cluster_analysis.png", dpi=150, bbox_inches='tight')

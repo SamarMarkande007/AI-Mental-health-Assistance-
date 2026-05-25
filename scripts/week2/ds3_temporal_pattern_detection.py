@@ -21,7 +21,7 @@ LABELS = ['Burglary worry','Car crime worry','Violent crime worry',
 for col in COLS:
     df[f'{col}_ra3'] = df[col].rolling(window=3, min_periods=2).mean().round(4)
 
-# ── Plot 1: Rolling averages ──────────────────────────────────────────────────
+# Plot 1: Rolling averages 
 fig, axes = plt.subplots(2, 1, figsize=(12, 8))
 fig.suptitle('CSEW Mental Health Proxy - 3-Year Rolling Averages', fontsize=13, fontweight='bold')
 
@@ -43,7 +43,7 @@ plt.tight_layout()
 plt.savefig(f"{OUT}/temporal_rolling_averages.png", dpi=150, bbox_inches='tight')
 plt.close()
 
-# ── Chow Test ────────────────────────────────────────────────────────────────
+# Chow Test 
 def chow_test(series, years, break_year):
     mask = ~np.isnan(series); y=series[mask]; x=years[mask]
     def rss(xs,ys):
@@ -66,7 +66,7 @@ for col,lbl in zip(COLS,LABELS):
                     'Significant':'YES' if isinstance(p,float) and p<0.05 else 'NO'})
 res_df = pd.DataFrame(results)
 
-# ── Plot 2: F-stat scan for each variable ────────────────────────────────────
+# Plot 2: F-stat scan for each variable 
 fig, axes = plt.subplots(2, 3, figsize=(16, 8))
 fig.suptitle('Chow Test — Structural Break Scan per Variable', fontsize=13, fontweight='bold')
 axes = axes.flatten()

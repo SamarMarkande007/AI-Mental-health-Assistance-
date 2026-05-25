@@ -13,7 +13,7 @@ imd    = pd.read_csv("datasets/File_1_IoD2025 Index of Multiple Deprivation.csv"
 lookup = pd.read_csv("datasets/LSOA_(2021)_to_SICBL_to_ICB_to_LAD_(April_2023)_Lookup_in_EN.csv")
 icb_map= gpd.read_file("datasets/ICB_APR_2023_EN_BGC.shp")
 
-# ── NHS service metrics by ICB ────────────────────────────────────────────────
+# NHS service metrics by ICB 
 nhs_sub = nhs[nhs['GROUP_TYPE']=='SubICB'].copy()
 nhs_sub['MEASURE_VALUE_SUPPRESSED'] = pd.to_numeric(nhs_sub['MEASURE_VALUE_SUPPRESSED'], errors='coerce')
 code_to_icb = lookup[['SICBL23CDH','ICB23NM']].drop_duplicates().rename(columns={'SICBL23CDH':'ORG_CODE1'})
@@ -33,7 +33,7 @@ for measure,(col,agg) in metrics.items():
     service = sub if service is None else service.merge(sub,on='ICB23NM',how='outer')
 service['Access_Rate'] = (service['Accessing']/service['Referrals']*100).round(2)
 
-# ── IMD → ICB ─────────────────────────────────────────────────────────────────
+# IMD -> ICB 
 imd = imd.rename(columns={
     'LSOA code (2021)':'LSOA21CD',
     'Index of Multiple Deprivation (IMD) Rank (where 1 is most deprived)':'IMD_Rank',
@@ -47,7 +47,7 @@ imd_icb = (imd.merge(lookup[['LSOA21CD','ICB23NM']],on='LSOA21CD',how='inner')
                                    IMD_Decile_Mean=('IMD_Decile','mean'),
                                    n_LSOAs=('LSOA21CD','count')).reset_index().round(4))
 
-# ── Join + Unmet Need Score ───────────────────────────────────────────────────
+# Join + Unmet Need Score 
 final = service.merge(imd_icb, on='ICB23NM', how='inner')
 
 def norm(s, invert=False):
@@ -70,10 +70,10 @@ final['underserved'] = (
      (final['Recovery_Rate']<= final['Recovery_Rate'].quantile(0.25)))
 )
 
-# ── Spatial join ──────────────────────────────────────────────────────────────
+# Spatial join 
 geo = icb_map.to_crs('EPSG:27700').merge(final, on='ICB23NM', how='left')
 
-# ── Plot 1: IMD map ───────────────────────────────────────────────────────────
+# Plot 1: IMD map 
 fig, ax = plt.subplots(figsize=(7, 7))
 geo.plot(ax=ax, column='IMD_Score_Mean', cmap='YlOrRd', linewidth=0.5, edgecolor='gray', legend=True)
 for _,row in geo.nlargest(5,'IMD_Score_Mean').iterrows():
@@ -85,7 +85,7 @@ ax.set_title('Average IMD Score by ICB — England',fontsize=12,fontweight='bold
 plt.tight_layout()
 plt.savefig(f"{OUT}/spatial_imd_map.png", dpi=150, bbox_inches='tight'); plt.close()
 
-# ── Plot 2: Access rate map ───────────────────────────────────────────────────
+#  Plot 2: Access rate map 
 fig, ax = plt.subplots(figsize=(7, 7))
 geo.plot(ax=ax, column='Access_Rate', cmap='RdYlGn', linewidth=0.5, edgecolor='gray', legend=True)
 for _,row in geo.nsmallest(5,'Access_Rate').iterrows():
@@ -97,7 +97,7 @@ ax.set_title('NHS Talking Therapies — Access Rate by ICB',fontsize=12,fontweig
 plt.tight_layout()
 plt.savefig(f"{OUT}/spatial_access_rate_map.png", dpi=150, bbox_inches='tight'); plt.close()
 
-# ── Plot 3: Underserved areas ─────────────────────────────────────────────────
+#  Plot 3: Underserved areas 
 fig, ax = plt.subplots(figsize=(7, 7))
 geo[~geo['underserved'].fillna(False)].plot(ax=ax,color='lightgreen',edgecolor='gray',lw=0.6,alpha=0.8)
 geo[geo['underserved'].fillna(False)].plot(ax=ax,color='red',edgecolor='darkred',lw=0.8,alpha=0.9)
@@ -108,7 +108,7 @@ ax.set_title('High-Need / Low-Service ICBs — England',fontsize=12,fontweight='
 plt.tight_layout()
 plt.savefig(f"{OUT}/spatial_underserved_map.png", dpi=150, bbox_inches='tight'); plt.close()
 
-# ── Save CSV ──────────────────────────────────────────────────────────────────
+# Save CSV 
 final.to_csv(f"{OUT}/spatial_icb_analysis.csv", index=False)
 
 n_u = final['underserved'].sum()
