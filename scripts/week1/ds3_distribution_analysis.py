@@ -125,6 +125,107 @@ axes[1].bar_label(bars,fmt='%.1f pp',padding=3,fontsize=10)
 axes[1].set(xticks=years,ylabel='pp gap (Women-Men)',title='Sex Gap Over Time')
 plt.tight_layout(); plt.savefig(f"{OUT}/dist_temporal_trend.png",dpi=150,bbox_inches='tight'); plt.close()
 
+# Plot 6: QQ Plots for Distribution Fit
+def reconstruct_obs(band_pcts, n=4000):
+    bands = [(0,5),(6,11),(12,17),(18,24)]
+    obs = []
+
+    for pct, (lo, hi) in zip(band_pcts, bands):
+        count = int((pct/100) * n)
+        obs.extend(np.random.uniform(lo, hi, count))
+
+    return np.array(obs)
+
+
+def qq_plot(ax, band_pcts, label, color, dist='norm'):
+    obs = reconstruct_obs(band_pcts)
+    obs = np.sort(obs)
+
+    n = len(obs)
+    prbs = (np.arange(1, n+1) - 0.5) / n
+
+    if dist == 'norm':
+        mu, sd = np.mean(obs), np.std(obs)
+        theo = stats.norm.ppf(prbs, mu, sd)
+        ks, p = stats.kstest(obs, lambda x: stats.norm.cdf(x, mu, sd))
+        dname = 'Normal'
+
+    elif dist == 'lognorm':
+        s, _, sc = stats.lognorm.fit(obs, floc=0)
+        theo = stats.lognorm.ppf(prbs, s, scale=sc)
+        ks, p = stats.kstest(obs, lambda x: stats.lognorm.cdf(x, s, scale=sc))
+        dname = 'Log-Normal'
+
+    elif dist == 'expon':
+        sc = np.mean(obs)
+        theo = stats.expon.ppf(prbs, scale=sc)
+        ks, p = stats.kstest(obs, lambda x: stats.expon.cdf(x, scale=sc))
+        dname = 'Exponential'
+
+    ax.scatter(theo, obs, s=8, alpha=0.5, color=color)
+
+    lo = min(theo.min(), obs.min())
+    hi = max(theo.max(), obs.max())
+
+    ax.plot([lo, hi], [lo, hi], 'r--', lw=1.5)
+
+    fit = 'GOOD FIT' if p > 0.05 else 'POOR FIT'
+
+    ax.set_title(
+        f'{label}\nvs {dname} | KS p={p:.3f} [{fit}]',
+        fontsize=9,
+        fontweight='bold'
+    )
+
+    ax.set_xlabel('Theoretical Quantiles', fontsize=8)
+    ax.set_ylabel('Sample Quantiles', fontsize=8)
+    ax.tick_params(labelsize=8)
+
+
+fig = plt.figure(figsize=(22, 14))
+
+fig.suptitle(
+    'QQ Plots — CIS-R Distribution vs Theoretical Distributions\n'
+    'APMS 2014 | Reconstructed from grouped band percentages',
+    fontsize=14,
+    fontweight='bold',
+    y=1.01
+)
+
+gs = gridspec.GridSpec(3, 4, hspace=0.55, wspace=0.35)
+
+groups = [
+    ('Men (overall)',   cisr_men['All'].values,   'steelblue'),
+    ('Women (overall)', cisr_women['All'].values, 'tomato'),
+    ('Age 16-24',       cisr_all['16-24'].values, 'seagreen'),
+    ('Age 45-54',       cisr_all['45-54'].values, 'orange'),
+]
+
+for row, dist in enumerate(['norm', 'lognorm', 'expon']):
+    for col, (lbl, pcts, col_c) in enumerate(groups):
+
+        ax = fig.add_subplot(gs[row, col])
+
+        qq_plot(
+            ax,
+            pcts,
+            lbl,
+            col_c,
+            dist=dist
+        )
+
+plt.tight_layout()
+
+plt.savefig(
+    f"{OUT}/dist_qq_plots.png",
+    dpi=150,
+    bbox_inches='tight'
+)
+
+plt.close()
+
+
 print("[DS3] Done — 5 PNGs saved to outputs/")
+print("  dist_qq_plots.png")
 print("  dist_cisr_sex_age.png | dist_cmd_heatmap_sex.png | dist_any_cmd_segments.png")
 print("  dist_regional_cmd.png | dist_temporal_trend.png")
